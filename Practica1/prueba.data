@@ -1,0 +1,12 @@
+ JULIO : 2012 = (
+["PRODUCTO1", 25.5, 1];
+["producto2", 25.8, 2];
+["producto3", 28, 3];
+["PRODUCTO4", 25.5, 4];
+["PRodUCTO5", 25.8, 5];
+["producto6", 28, 6];
+["PRODUCTO7", 25.5, 7];
+["producto8", 25,8];
+["producto9", 30, 9];
+["producto10", 40, 10];
+ )

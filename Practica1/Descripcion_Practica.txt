@@ -1,0 +1,11 @@
+Palabras reservadas:
+NOMBRE_MES
+AÑO
+
+SIGNOS:
+Dos puntos :
+Signo igual =
+Parentesis (
+Parentesis )
+corchete [
+corcete  ]
