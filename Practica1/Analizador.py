@@ -2,7 +2,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np 
 from Token import Token, TokenDos
-  
+
 
 Productos=[]
 Totales=[]
@@ -14,95 +14,95 @@ class AnalizadorLexico:
     def __init__(self):
         self.listaTokens = []
         self.listaErrores = []
-        
-    
+
+
     def analizar(self, cadena):
         self.listaTokens = []
         self.listaErrores = []
 
         cadena += '$'
-        
+
         indice = 0
         buffer = ""
         estado = 'A'
-        
-        
+
+
         while indice < len(cadena):
             caracter = cadena[indice]
             #PARA LOS SIGNOS
             if estado == 'A':
-                
+
 
                 if caracter == '=':
-                    
+
                     buffer = ''
                     estado = 'A'
                 elif caracter == ';':
-                    
+
                     buffer = ''
                     estado = 'A'
                 elif caracter == '{':
-                    
+
                     buffer = ''
                     estado = 'A'
                 elif caracter == '}':
-                    
+
                     buffer = ''
                     estado = 'A'
                 elif caracter == '[':
-                    
+
                     buffer = ''
                 elif caracter == ']':
-                    
+
                     buffer = ''
                     estado = 'A'
                 elif caracter == '(':
-                    
+
                     buffer = ''
                 elif caracter == ')':
-                    
+
                     buffer = ''
                     estado = 'A'
                 elif caracter == ',':
-                    
+
                     buffer = ''
                     estado = 'A'
-               
+
                 elif caracter == ':':
-                    
+
                     buffer = ''
                     estado = 'A'
                 elif caracter.isalpha() and (not caracter.isdigit()):
                     buffer = caracter
-                   
+
                     estado = 'B'
                 elif caracter.isdigit():
                     buffer = caracter
-                    
+
                     estado = 'Z'
-                
-                
-                
+
+
+
                 elif caracter == '"':
                     buffer += caracter
-                    
+
                     estado = 'C'
-                
-                
-                
+
+
+
                 elif caracter == '$':
-                    
+
                     buffer = ''
                     estado = 'A'
-                    
-                   
+
+
             elif estado == 'B':
                 if caracter.isalpha() and (not caracter.isdigit()):
                     buffer += caracter
-                    
+
                     estado = 'B'
                 else:
-                    
+
                     global titulo
                     titulo=buffer
                     buffer = ''
@@ -112,7 +112,7 @@ class AnalizadorLexico:
             elif estado == 'Z':
                 if caracter.isdigit():
                     buffer += caracter
-                    
+
                     estado = 'Z'
                 else:
                     #hacer validacion para las palabras reservadas
@@ -125,41 +125,42 @@ class AnalizadorLexico:
             elif estado == 'C':
                 if caracter == '"':
                     buffer += caracter
-                    
-                    
+
+
                     producto =buffer.upper()
                     Productos.append(producto)
                     buffer = ''
                     estado = 'D'
-                
+                    indice+=1
+
                 else:
                     buffer += caracter
-                    
+
                     estado = 'C'
-                    
+
             elif estado == 'D':
-                if caracter == ' ':
-                    
+                if caracter == ',':
+
                     buffer = ''
                     estado = 'E'
-                
+
                     #para numeros
             elif estado == 'E':
                 if caracter.isdigit() or caracter==".":
                     buffer += caracter 
-                    
+
                     estado = 'E'
                 else:
                     #antes de precio va un float
                     precio=float(buffer)
-                    
+
                     buffer = ''
                     indice -= 1
                     estado = 'F'
 
             if estado == 'F':
-                if caracter == ' ':
-                    
+                if caracter == ',':
+
                     buffer = ''
                     estado = 'G'
 
@@ -169,31 +170,31 @@ class AnalizadorLexico:
                     estado = 'G'
                 else:
                     cantidad=float(buffer)
-                    precioFinal=cantidad*precio
+                    precioFinal=float(cantidad*precio)
                     self.listaTokens.append(Token(producto, precio, cantidad, precioFinal))
                     Totales.append(precioFinal)
 
                     buffer = ''
-                    
+
                     estado = 'A'
-               
+
             indice += 1
         return tuple(self.listaTokens), tuple(self.listaErrores)
 
     #INICIA SEGUNDO ANALIZADORRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
 
 #--------------------------------------------------------------------------------------------------------------------
-    
+
 
          #Definimos una lista con paises como string
-    
+
     def graficaDeBarras(self):
         fig, ax = plt.subplots()
         #Colocamos una etiqueta en el eje Y
         ax.set_ylabel('TOTAL')
         #Colocamos una etiqueta en el eje X
-        
-        ax.set_title('REPORTE DE VENTAS '+ titulo.upper() +" DEL AÑO "+ año.upper())
+
+        ax.set_title('REPORTE DE VENTAS '+ titulo.upper() )
         #Creamos la grafica de barras utilizando 'paises' como eje X y 'ventas' como eje y.
         plt.bar(Productos, Totales)
         plt.savefig('GraficaDebarras.png')
@@ -210,18 +211,22 @@ class AnalizadorLexico:
         shadow=True, startangle=90)
         #señalamos la forma, en este caso 'equal' es para dar forma circular
         ax1.axis('equal')
-        plt.title('REPORTE DE VENTAS ' + titulo.upper() +" DEL AÑO "+ año.upper())
+        plt.title('REPORTE DE VENTAS ' + titulo.upper())
         plt.legend()
         plt.savefig('grafica_pie.png')
         plt.show()
 
     #Grafica de lineas
     def graficaLineas(self):
+        
        plt.plot(Productos, Totales)
+        
+       plt.title('REPORTE DE VENTAS ' + titulo.upper() )
+       
        plt.plot(Totales, marker='x', linestyle=':', color='b')
        plt.savefig('grafica_linea.png')
        plt.show()
-    
+
     #Grafica de lineas segundo intento xd
     '''
     def graficaLinea(self):
@@ -234,8 +239,3 @@ class AnalizadorLexico:
     '''
 
 #REALIZANDO SEGUNDO ANALIZADOR 
-
-
-       
-
-                    
